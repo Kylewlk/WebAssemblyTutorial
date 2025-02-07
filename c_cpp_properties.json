@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "WebAssembly",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${env:EMSDK}/upstream/emscripten/system/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
