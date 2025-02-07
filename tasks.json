@@ -16,6 +16,20 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+
+        {
+            "label": "StartServer",
+            "type": "process",
+            "command": "${input:startServer}"
+        }
+    ],
+    
+    "inputs": [
+        {
+            "id": "startServer",
+            "type": "command",
+            "command": "livePreview.runServerLoggingTask"
         }
     ]
 }

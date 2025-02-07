@@ -9,6 +9,14 @@
             "type": "node",
             "request": "launch",
             "program": "${command:cmake.getLaunchTargetPath}"
+        },
+
+        {
+            "name": "Launch Chrome",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://127.0.0.1:5500/build/hello.html",
+            "preLaunchTask": "StartServer"
         }
     ]
 }
