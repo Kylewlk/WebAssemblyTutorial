@@ -14,7 +14,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
-      "toolchainFile": "/Users/kyle/programs/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+      "toolchainFile": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
     }
   ],
   "buildPresets": [

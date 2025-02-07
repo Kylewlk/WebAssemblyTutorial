@@ -30,7 +30,7 @@ emcmake echo
 ```
 
 ## 使用CMakeUserPresets.json
-
+`$env{EMSDK}` 为 emsdk安装目录，安装时会自动配置 `EMSDK` 环境变量
 ```json
 {
   "version": 3,
@@ -48,7 +48,7 @@ emcmake echo
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       },
-      "toolchainFile": "/Users/kyle/programs/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+      "toolchainFile": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
     }
   ]
 }

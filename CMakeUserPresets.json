@@ -1,0 +1,45 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base-preset",
+      "displayName": "Base Configuration Preset",
+      "binaryDir": "cmake-build",
+      "generator": "Unix Makefiles",
+      "toolchainFile": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+    },
+    {
+      "name": "WasmDebug",
+      "displayName": "WasmDebugBuild",
+      "inherits": "base-preset",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "WasmRelease",
+      "displayName": "WasmRelease",
+      "inherits": "base-preset",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+      {
+        "name": "Debug",
+        "configurePreset": "WasmDebug",
+        "configuration": "Debug"
+      },
+      {
+        "name": "Release",
+        "configurePreset": "WasmRelease",
+        "configuration": "Release"
+      }
+    ]
+}
