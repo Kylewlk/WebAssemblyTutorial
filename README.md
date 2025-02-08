@@ -16,9 +16,34 @@ emcc -v
 // 检查cmake是否可用
 emcmake echo
 ```
+
+### Windows
+
 ## uninstall
 卸载参考：[uninstall](https://emscripten.org/docs/tools_reference/emsdk.html#emsdk-remove-tool-sdk)
 
+
+
+# 编译链接
+## 编译选项
+[编译选项参考](https://emscripten.org/docs/tools_reference/emcc.html)
+* `-g` 生成调试信息
+* `-sEXPORTED_FUNCTIONS=foo,bar` 设置导出给js使用的函数
+* `-gseparate-dwarf[=FILENAME]` 将调试信息输出到单独的文件
+
+## 编译输出
+* 编译生成 .js `./emcc test/hello.c`, 生成的 js 可以使用node执行,从main函数开始执行，没有main函数，则不会执行。
+* 编译输出 .html `./emcc test/hello_world.c -o hello.html` 打开html会执行main函数 
+* 使用 `--shell-file=../shell.html` 将输出嵌套到指定html文件中
+
+
+## 链接系统库
+### 使用port
+* 使用`--use-port=sdl2`链接指定的库
+* `emcc --show-ports` 查询可用的库，
+### 使用编译选项链接系统库
+* 使用`-sUSE_SDL=1` 或 `-sFULL_ES3` 链接指定的库
+* 查询支持的库，[Emscripten Compiler Settings](https://emscripten.org/docs/tools_reference/settings_reference.html) 
 
 # cmake
 * Mac OS 上可用使用 `Ninja` 或者  `Unix Makefiles`
@@ -68,6 +93,19 @@ cmake --preset default
 cmake --build cmake-build
 ```
 
+## cmake输出
+* 使用`CMAKE_EXECUTABLE_SUFFIX` 指定输出 js 或者 html
+```
+if (CMAKE_SYSTEM_NAME STREQUAL Emscripten)
+    set(CMAKE_EXECUTABLE_SUFFIX .html)
+    或者
+    set(CMAKE_EXECUTABLE_SUFFIX .js)
+endif()
+```
+
+
+
+
 # 代码提示和错误检查
 * 安装[ C/C++ Extension Pack ](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)插件
 * 在.vscode文件夹中添加c_cpp_properties.json文件
@@ -90,6 +128,8 @@ cmake --build cmake-build
     "version": 4
 }
 ```
+
+
 
 # 调试
 ## vscode直接运行调试
