@@ -10,7 +10,7 @@
       "name": "default",
       "displayName": "Emscripten",
       "binaryDir": "cmake-build",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },

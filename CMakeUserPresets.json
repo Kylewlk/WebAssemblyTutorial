@@ -10,7 +10,7 @@
       "name": "base-preset",
       "displayName": "Base Configuration Preset",
       "binaryDir": "cmake-build",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "toolchainFile": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
     },
     {

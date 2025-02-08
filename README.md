@@ -4,15 +4,26 @@
 
 ## export to enveriment
 
-Mac OS 中把下面代码添加到 `~/.zprofile` 中
+### Mac OS 
+把下面代码添加到 `~/.zprofile` 中
 ``` bash
-source "/Users/kyle/programs/emsdk/emsdk_env.sh"
+// 使用 emsdk_env.sh会添加需要的环境变量
+source "/Users/programs/emsdk/emsdk_env.sh" > /dev/null 2>&1
+
+// 检查编译器配置
+emcc -v
+
+// 检查cmake是否可用
+emcmake echo
 ```
 ## uninstall
 卸载参考：[uninstall](https://emscripten.org/docs/tools_reference/emsdk.html#emsdk-remove-tool-sdk)
 
 
 # cmake
+* Mac OS 上可用使用 `Ninja` 或者  `Unix Makefiles`
+* Windows 上可用使用 `Ninja`  或者 `MinGW Makefiles`
+* 使用 `Ninja` 需要单独下载 [Ninja](https://github.com/ninja-build/ninja/releases)，配置PATH环境变量
 
 ## 使用 emcmake
 emcmake 可以自动配置 cmake 变量
@@ -28,7 +39,7 @@ emcmake echo
 ```
 
 ## 使用CMakeUserPresets.json
-`$env{EMSDK}` 为 emsdk安装目录，安装时会自动配置 `EMSDK` 环境变量
+`$env{EMSDK}` 为 emsdk安装目录，需要安装时配置了 `EMSDK` 环境变量
 ```json
 {
   "version": 3,
@@ -42,7 +53,7 @@ emcmake echo
       "name": "default",
       "displayName": "Emscripten",
       "binaryDir": "cmake-build",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       },
@@ -60,20 +71,20 @@ cmake --build cmake-build
 # 代码提示和错误检查
 * 安装[ C/C++ Extension Pack ](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)插件
 * 在.vscode文件夹中添加c_cpp_properties.json文件
+* Windows上 `compilerPath` 需要使用 emcc.bat
 ```json
 {
     "configurations": [
         {
             "name": "WebAssembly",
             "includePath": [
-                "${workspaceFolder}/**",
                 "${env:EMSDK}/upstream/emscripten/system/include"
             ],
             "defines": [],
-            "compilerPath": "${env:EMSDK}/upstream/emscripten/em++",
+            "compilerPath": "${env:EMSDK}/upstream/emscripten/emcc", 
             "cStandard": "c17",
             "cppStandard": "c++20",
-            "intelliSenseMode": "gcc-x64"
+            "intelliSenseMode": "linux-clang-x64"
         }
     ],
     "version": 4
