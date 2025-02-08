@@ -5,19 +5,41 @@
 ## export to enveriment
 
 ### Mac OS 
-把下面代码添加到 `~/.zprofile` 中
 ``` bash
-// 使用 emsdk_env.sh会添加需要的环境变量
+# Download and install the latest SDK tools.
+./emsdk install latest
+
+# Make the "latest" SDK "active" for the current user. (writes .emscripten file)
+./emsdk activate latest
+
+# 把下面代码添加到 ~/.zprofile 中, emsdk_env.sh会添加需要的环境变量
 source "/Users/programs/emsdk/emsdk_env.sh" > /dev/null 2>&1
 
-// 检查编译器配置
+# 检查编译器配置
 emcc -v
 
-// 检查cmake是否可用
+# 检查cmake是否可用
 emcmake echo
 ```
 
 ### Windows
+```powershell
+# Download and install the latest SDK tools.
+.\emsdk.bat install latest
+
+# Make the "latest" SDK "active" for the current user. (writes .emscripten file)
+.\emsdk.bat activate latest 
+
+# 将环境变量信息写入用户环境变量中，如果vscode识别不到环境变量，可以注销或重启一下Windows系统
+.\emsdk.bat activate --permanent
+
+# 检查编译器配置
+emcc.bat -v
+
+# 检查cmake是否可用，需要先下载Ninja，并配置环境变量
+emcmake.bat echo
+
+```
 
 ## uninstall
 卸载参考：[uninstall](https://emscripten.org/docs/tools_reference/emsdk.html#emsdk-remove-tool-sdk)

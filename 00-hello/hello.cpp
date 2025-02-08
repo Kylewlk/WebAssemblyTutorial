@@ -8,11 +8,14 @@ void fun( int n)
 }
 
 
+
 int main() 
 {
     emscripten_run_script("console.log('Hello emscripten')");
     std::cout << "Hello, World!" << std::endl;
  
+    std::cout << "sizeof(int*): " << sizeof(int*) << std::endl;
+
     fun(5);
     return 0;
 }
