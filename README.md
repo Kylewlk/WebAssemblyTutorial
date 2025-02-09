@@ -219,6 +219,8 @@ endif()
 * 安装chrome插件[C/C++ DevTools Support (DWARF)](https://chromewebstore.google.com/detail/cc++-devtools-support-dwa/pdcpmagijalfljmkmjngeonclgbbannb)
 * 在Chrome开发者工具工具的 `Source` 中会多一个 `file://` 展开目录会包含C/C++源码，可以直接断点调试 
 
+# 其他
+[视频教程 WebAssembly Tutorial](https://www.youtube.com/watch?v=_8T9T6MQ1fU&list=PLysLvOneEETPM_YbEyZcJ35_3pSdrj33O)
 
 # Ref
 * [WASM Debugging with Emscripten and VSCode](https://floooh.github.io/2023/11/11/emscripten-ide.html)
