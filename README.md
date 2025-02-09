@@ -138,6 +138,7 @@ endif()
         {
             "name": "WebAssembly",
             "includePath": [
+                "${workspaceFolder}/**",
                 "${env:EMSDK}/upstream/emscripten/system/include"
             ],
             "defines": [],
