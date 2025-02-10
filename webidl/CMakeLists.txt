@@ -7,6 +7,8 @@ add_executable(webidl test.cpp test.h)
 
 target_link_options(webidl PRIVATE "--post-js=${CMAKE_CURRENT_SOURCE_DIR}/glue.js"
     "--shell-file=${CMAKE_CURRENT_SOURCE_DIR}/shell.html"
+    "-sEXPORTED_FUNCTIONS=[_malloc, _free]"
+    "-sEXPORTED_RUNTIME_METHODS=[stringToUTF8]"
     # "--extern-post-js=${CMAKE_CURRENT_SOURCE_DIR}/post.js"
 )
 
