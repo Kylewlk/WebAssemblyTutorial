@@ -11,6 +11,10 @@ protected:
 public:
   Parent(int val);
   Parent(Parent *p, Parent *q); // overload constructor
+  ~Parent()
+  {
+    printf("Parent::~Parent()\n");
+  }
   int getVal() { return value; }; // inline should work just fine here, unlike Way 1 before
   void mulVal(int mul);
   void parentFunc() {}
