@@ -362,5 +362,16 @@ var isMemoryGrowthAllowed = false;
     }
   }
 
+  setTimeout(()=>{
+    var p1 = new TheModule.Parent(101);
+    console.log("P1", p1.getVal());
+    p1 = undefined;
+
+    var p2 = new TheModule.Parent(102);
+    TheModule.destroy(p2);
+    p2 = undefined;
+  }, 10);
+
+
   console.log("\ndone.");
 })();

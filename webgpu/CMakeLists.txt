@@ -6,11 +6,15 @@ set(CMAKE_EXECUTABLE_SUFFIX .html)
 add_executable(webgpu webgpu.cpp webgpu.h)
 
 target_link_options(webgpu PRIVATE
+
     # "--post-js=${CMAKE_CURRENT_BINARY_DIR}/glue.js"
     "--shell-file=${CMAKE_CURRENT_SOURCE_DIR}/shell.html"
+
     # "-sEXPORTED_FUNCTIONS=[\"_malloc\", \"_free\"]"
     # "-sEXPORTED_RUNTIME_METHODS=[\"stringToUTF8\"]"
     # "--extern-post-js=${CMAKE_CURRENT_SOURCE_DIR}/post.js"
+    "-sUSE_WEBGPU=1"
+    "-sASYNCIFY"
 )
 
 target_include_directories(webgpu PUBLIC ${CMAKE_CURRENT_BINARY_DIR})

@@ -13,7 +13,7 @@ public:
   Parent(Parent *p, Parent *q); // overload constructor
   ~Parent()
   {
-    printf("Parent::~Parent()\n");
+    printf("Parent::~Parent() value=%d, attr=%d\n", value, attr);
   }
   int getVal() { return value; }; // inline should work just fine here, unlike Way 1 before
   void mulVal(int mul);
