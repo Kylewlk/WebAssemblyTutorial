@@ -14,10 +14,10 @@ target_link_options(webidl PRIVATE "--post-js=${CMAKE_CURRENT_BINARY_DIR}/glue.j
 
 target_include_directories(webidl PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
-message(STATUS "webidl bin:${CMAKE_CURRENT_BINARY_DIR}")
+# message(STATUS "webidl bin:${CMAKE_CURRENT_BINARY_DIR}")
 
-set(PYTHON $ENV{EMSDK_PYTHON} CACHE STRING "Python path")
-set(EMSCRIPTEN_ROOT $ENV{EMSDK}/upstream/emscripten CACHE STRING "Emscripten path")
+set(PYTHON $ENV{EMSDK_PYTHON})
+set(EMSCRIPTEN_ROOT $ENV{EMSDK}/upstream/emscripten)
 set(WEBIDL_BINDER_SCRIPT ${EMSCRIPTEN_ROOT}/tools/webidl_binder.py)
 set(WEB_IDL_FILE ${CMAKE_CURRENT_SOURCE_DIR}/test.idl)
 
