@@ -1,0 +1,7 @@
+
+[NoDelete]
+interface Context {
+    static Context getInstance();
+    void setUrl([Const] DOMString arg);
+    [Const] DOMString getUrl();
+};

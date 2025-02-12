@@ -26,16 +26,9 @@ add_custom_command(
     BYPRODUCTS parser.out WebIDLGrammar.pkl
     COMMAND ${PYTHON} ${WEBIDL_BINDER_SCRIPT} ${WEB_IDL_FILE} glue
     DEPENDS ${WEB_IDL_FILE}
-    COMMENT "Generating binding files"
+    COMMENT "Generating web idl binding files"
     VERBATIM)
 
 add_custom_target(webidl-bindings ALL DEPENDS glue.cpp)
 
 add_dependencies(webidl webidl-bindings)
-
-add_custom_command(
-    TARGET webidl POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-    ${CMAKE_CURRENT_SOURCE_DIR}/post.js
-    ${CMAKE_CURRENT_BINARY_DIR}/post.js
-)

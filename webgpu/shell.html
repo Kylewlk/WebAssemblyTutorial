@@ -86,7 +86,9 @@
 
       var Module = {
         onRuntimeInitialized:()=>{
-
+          var context = Module.Context.prototype.getInstance();
+          context.setUrl(window.origin)
+          console.log("Context URL: " + context.getUrl())
         },
         print(...args) {
           // These replacements are necessary if you render to raw HTML

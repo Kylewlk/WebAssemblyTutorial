@@ -7,7 +7,7 @@ add_executable(webgpu webgpu.cpp webgpu.h)
 
 target_link_options(webgpu PRIVATE
 
-    # "--post-js=${CMAKE_CURRENT_BINARY_DIR}/glue.js"
+    "--post-js=${CMAKE_CURRENT_BINARY_DIR}/webgpu_glue.js"
     "--shell-file=${CMAKE_CURRENT_SOURCE_DIR}/shell.html"
 
     # "-sEXPORTED_FUNCTIONS=[\"_malloc\", \"_free\"]"
@@ -15,6 +15,7 @@ target_link_options(webgpu PRIVATE
     # "--extern-post-js=${CMAKE_CURRENT_SOURCE_DIR}/post.js"
     "-sUSE_WEBGPU=1"
     "-sASYNCIFY"
+    "-sFETCH"
 )
 
 target_include_directories(webgpu PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
@@ -22,4 +23,14 @@ target_include_directories(webgpu PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 set(PYTHON $ENV{EMSDK_PYTHON})
 set(EMSCRIPTEN_ROOT $ENV{EMSDK}/upstream/emscripten)
 set(WEBIDL_BINDER_SCRIPT ${EMSCRIPTEN_ROOT}/tools/webidl_binder.py)
-set(WEB_IDL_FILE ${CMAKE_CURRENT_SOURCE_DIR}/webgpu.idl)
+set(IDL_FILE ${CMAKE_CURRENT_SOURCE_DIR}/webgpu.idl)
+
+add_custom_command(
+    OUTPUT webgpu_glue.cpp webgpu_glue.js
+    BYPRODUCTS parser.out WebIDLGrammar.pkl
+    COMMAND ${PYTHON} ${WEBIDL_BINDER_SCRIPT} ${IDL_FILE} webgpu_glue
+    DEPENDS ${IDL_FILE}
+    COMMENT "Generating webgpu binding files"
+    VERBATIM)
+
+add_custom_target(webgpu-bindings ALL DEPENDS webgpu_glue.cpp)
