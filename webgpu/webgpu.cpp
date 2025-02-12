@@ -7,6 +7,18 @@
 #include <thread>
 #include <string>
 
+// #define STBI_NO_JPEG
+// #define STBI_NO_PNG
+#define STBI_NO_BMP
+#define STBI_NO_PSD
+#define STBI_NO_TGA
+#define STBI_NO_GIF
+#define STBI_NO_HDR
+#define STBI_NO_PIC
+#define STBI_NO_PNM
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include "webgpu.h"
 
 #include "webgpu_glue.cpp"
@@ -224,40 +236,14 @@ void initDraw()
     }
 
     {
-        WGPUTextureDescriptor textureDesc{};
-        textureDesc.dimension = WGPUTextureDimension_2D;
-        textureDesc.size = {4, 4, 1};
-        textureDesc.mipLevelCount = 1;
-        textureDesc.sampleCount = 1;
-        textureDesc.format = WGPUTextureFormat_RGBA8Unorm;
-        textureDesc.usage = WGPUTextureUsage_CopyDst | WGPUTextureUsage_TextureBinding;
-        textureDesc.viewFormatCount = 0;
-        textureDesc.viewFormats = nullptr;
-        texture = wgpuDeviceCreateTexture(device, &textureDesc);
-
-        WGPUImageCopyTexture destination{};
-        destination.texture = texture;
-        destination.mipLevel = 0;
-        destination.origin = {0, 0, 0};
-        destination.aspect = WGPUTextureAspect_All;
-
-        WGPUTextureDataLayout source;
-        source.offset = 0;
-        source.bytesPerRow = 4 * 4;
-        source.rowsPerImage = 4;
-
-        std::array<uint8_t, 4 * 4 * 4> imageData = {};
-        imageData.fill(255);
-        wgpuQueueWriteTexture( queue, &destination, imageData.data(), imageData.size(), &source, &textureDesc.size);
-        textureView = wgpuTextureCreateView(texture, nullptr);
 
         WGPUSamplerDescriptor samplerDescriptor{};
         samplerDescriptor.addressModeU = WGPUAddressMode_Repeat; 
         samplerDescriptor.addressModeV = WGPUAddressMode_Repeat;
         samplerDescriptor.addressModeW = WGPUAddressMode_Repeat;
-        samplerDescriptor.magFilter = WGPUFilterMode_Nearest;
-        samplerDescriptor.minFilter = WGPUFilterMode_Nearest;
-        samplerDescriptor.mipmapFilter = WGPUMipmapFilterMode_Nearest;
+        samplerDescriptor.magFilter = WGPUFilterMode_Linear;
+        samplerDescriptor.minFilter = WGPUFilterMode_Linear;
+        samplerDescriptor.mipmapFilter = WGPUMipmapFilterMode_Linear;
         samplerDescriptor.lodMinClamp = 0.0f;
         samplerDescriptor.lodMaxClamp = 1.0f;
         samplerDescriptor.compare = WGPUCompareFunction_Undefined;
@@ -279,21 +265,6 @@ void initDraw()
         bgLayoutDescriptor.entryCount = bindLayoutEntries.size();
         bgLayoutDescriptor.entries = bindLayoutEntries.data();
         bindGroupLayout = wgpuDeviceCreateBindGroupLayout(device, &bgLayoutDescriptor);
-
-        // Binding Group
-        std::array<WGPUBindGroupEntry, 2> bindGroupEntries{};
-        auto &samplerEntry = bindGroupEntries[0];
-        samplerEntry.binding = 0;
-        samplerEntry.sampler = sampler;
-        auto &imageEntry = bindGroupEntries[1];
-        imageEntry.binding = 1;
-        imageEntry.textureView = textureView;
-
-        WGPUBindGroupDescriptor bgDescriptor{};
-        bgDescriptor.entryCount = bindGroupEntries.size();
-        bgDescriptor.entries = bindGroupEntries.data();
-        bgDescriptor.layout = bindGroupLayout;
-        bindGroup = wgpuDeviceCreateBindGroup(device, &bgDescriptor);
     }
 
     {
@@ -363,6 +334,71 @@ void initDraw()
     }
 }
 
+void createTextureAndGroupBinding(const void* imageData, uint64_t numBytes)
+{
+    {
+        int width{}, height{}, channels{};
+        auto imagePixel = stbi_load_from_memory((stbi_uc const *)imageData, numBytes, &width, &height, &channels, STBI_rgb_alpha);
+
+        WGPUTextureDescriptor textureDesc{};
+        textureDesc.dimension = WGPUTextureDimension_2D;
+        textureDesc.size = {static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
+        textureDesc.mipLevelCount = 1;
+        textureDesc.sampleCount = 1;
+        textureDesc.format = WGPUTextureFormat_RGBA8Unorm;
+        textureDesc.usage = WGPUTextureUsage_CopyDst | WGPUTextureUsage_TextureBinding;
+        textureDesc.viewFormatCount = 0;
+        textureDesc.viewFormats = nullptr;
+        texture = wgpuDeviceCreateTexture(device, &textureDesc);
+
+        WGPUImageCopyTexture destination{};
+        destination.texture = texture;
+        destination.mipLevel = 0;
+        destination.origin = {0, 0, 0};
+        destination.aspect = WGPUTextureAspect_All;
+
+        WGPUTextureDataLayout source{};
+        source.offset = 0;
+        source.bytesPerRow = width * 4;
+        source.rowsPerImage = height;
+
+        wgpuQueueWriteTexture(queue, &destination, imagePixel, width*height*4, &source, &textureDesc.size);
+        textureView = wgpuTextureCreateView(texture, nullptr);
+        stbi_image_free(imagePixel);
+    }
+
+    {
+        // Binding Group
+        std::array<WGPUBindGroupEntry, 2> bindGroupEntries{};
+        auto &samplerEntry = bindGroupEntries[0];
+        samplerEntry.binding = 0;
+        samplerEntry.sampler = sampler;
+        auto &imageEntry = bindGroupEntries[1];
+        imageEntry.binding = 1;
+        imageEntry.textureView = textureView;
+
+        WGPUBindGroupDescriptor bgDescriptor{};
+        bgDescriptor.entryCount = bindGroupEntries.size();
+        bgDescriptor.entries = bindGroupEntries.data();
+        bgDescriptor.layout = bindGroupLayout;
+        bindGroup = wgpuDeviceCreateBindGroup(device, &bgDescriptor);
+    }
+}
+
+void downloadSucceeded(emscripten_fetch_t *fetch)
+{
+    printf("Finished downloading %llu bytes from URL %s.\n", fetch->numBytes, fetch->url);
+    // The data is now available at fetch->data[0] through fetch->data[fetch->numBytes-1];
+    createTextureAndGroupBinding(fetch->data, fetch->numBytes);
+
+    emscripten_fetch_close(fetch); // Free data associated with the fetch.
+}
+
+void downloadFailed(emscripten_fetch_t *fetch)
+{
+    printf("Downloading %s failed, HTTP failure status code: %d.\n", fetch->url, fetch->status);
+    emscripten_fetch_close(fetch); // Also free data on failure.
+}
 
 bool render(double time, void *userData)
 {
@@ -392,10 +428,13 @@ bool render(double time, void *userData)
     descriptor.colorAttachments = &colorAttachment;
     auto renderPass = wgpuCommandEncoderBeginRenderPass(commandEncoder, &descriptor);
 
-    wgpuRenderPassEncoderSetPipeline(renderPass, pipeline);
-    wgpuRenderPassEncoderSetBindGroup(renderPass, 0, bindGroup, 0, nullptr);
-    wgpuRenderPassEncoderSetVertexBuffer(renderPass, 0, vertexBuffer, 0, wgpuBufferGetSize(vertexBuffer));
-    wgpuRenderPassEncoderDraw(renderPass, 6, 1, 0, 0);
+    if (bindGroup != nullptr)
+    {
+        wgpuRenderPassEncoderSetPipeline(renderPass, pipeline);
+        wgpuRenderPassEncoderSetBindGroup(renderPass, 0, bindGroup, 0, nullptr);
+        wgpuRenderPassEncoderSetVertexBuffer(renderPass, 0, vertexBuffer, 0, wgpuBufferGetSize(vertexBuffer));
+        wgpuRenderPassEncoderDraw(renderPass, 6, 1, 0, 0);
+    }
 
     wgpuRenderPassEncoderEnd(renderPass);
 
@@ -410,19 +449,6 @@ bool render(double time, void *userData)
     return true; // 返回true继续回调
 }
 
-void downloadSucceeded(emscripten_fetch_t *fetch)
-{
-    printf("Finished downloading %llu bytes from URL %s.\n", fetch->numBytes, fetch->url);
-    // The data is now available at fetch->data[0] through fetch->data[fetch->numBytes-1];
-    emscripten_fetch_close(fetch); // Free data associated with the fetch.
-}
-
-void downloadFailed(emscripten_fetch_t *fetch)
-{
-    printf("Downloading %s failed, HTTP failure status code: %d.\n", fetch->url, fetch->status);
-    emscripten_fetch_close(fetch); // Also free data on failure.
-}
-
 int main()
 {
     initWebGpu();
@@ -435,7 +461,7 @@ int main()
     attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
     attr.onsuccess = downloadSucceeded;
     attr.onerror = downloadFailed;
-    auto url = Context::getInstance()->getUrlString() + "/tasks.json";
+    auto url = Context::getInstance()->getUrlString() + "/webgpu/mc_grass.jpeg";
     emscripten_fetch(&attr, url.c_str());
 
     emscripten_request_animation_frame_loop(render, nullptr);
