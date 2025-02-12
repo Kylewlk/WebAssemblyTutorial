@@ -14,8 +14,10 @@ target_link_options(webgpu PRIVATE
     # "-sEXPORTED_RUNTIME_METHODS=[\"stringToUTF8\"]"
     # "--extern-post-js=${CMAKE_CURRENT_SOURCE_DIR}/post.js"
     "-sUSE_WEBGPU=1"
-    "-sASYNCIFY"
-    "-sFETCH"
+    "-sASYNCIFY=1"
+    "-sFETCH=1"
+    "-sFILESYSTEM=0"
+   
 )
 
 target_include_directories(webgpu PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
