@@ -6,7 +6,7 @@ set(CMAKE_EXECUTABLE_SUFFIX .html)
 add_executable(webgpu webgpu.cpp webgpu.h)
 
 target_compile_options(webgpu PUBLIC
-    # "-sUSE_PTHREADS=1"
+    "-sUSE_PTHREADS=1"
     "-sWASM_WORKERS=1"
 )
 
@@ -22,12 +22,13 @@ target_link_options(webgpu PRIVATE
     "-sASYNCIFY=1"
     "-sFETCH=1"
     "-sFILESYSTEM=0"
-    # "-sALLOW_MEMORY_GROWTH=1"
-    "-sWASM_WORKERS=1"
-    # "-sEXIT_RUNTIME=0"
+    "-sALLOW_MEMORY_GROWTH=1"
 
-    # "-sPTHREAD_POOL_SIZE=2"
-    # "-sUSE_PTHREADS=1"
+    "-sWASM_WORKERS=1"
+    "-sPTHREAD_POOL_SIZE=2"
+    "-sUSE_PTHREADS=1"
+
+    # "-sEXIT_RUNTIME=0"
 )
 
 target_include_directories(webgpu PUBLIC ${CMAKE_CURRENT_BINARY_DIR})

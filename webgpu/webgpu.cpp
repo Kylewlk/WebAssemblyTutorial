@@ -7,6 +7,7 @@
 #include <format>
 #include <thread>
 #include <string>
+#include <future>
 
 // #define STBI_NO_JPEG
 // #define STBI_NO_PNG
@@ -460,6 +461,8 @@ void run_in_worker()
     emscripten_terminate_wasm_worker(worker);
 }
 
+std::future<void> future;
+
 int main()
 {
     std::cout << "Main Thread ID:" << std::this_thread::get_id() << std::endl;
@@ -480,5 +483,11 @@ int main()
 
     worker = emscripten_malloc_wasm_worker(/*stackSize: */ 1024);
     emscripten_wasm_worker_post_function_v(worker, run_in_worker);
+
+    future = std::async([](){
+        std::cout << "Future Thread ID:" << std::this_thread::get_id() << std::endl;
+        std::cout << "Hello from other thread!" << std::endl;
+    });
+
     return 0;
 }
