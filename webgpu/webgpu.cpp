@@ -1,6 +1,7 @@
 #include <emscripten/emscripten.h>
 #include <emscripten/html5.h>
 #include <emscripten/fetch.h>
+#include <emscripten/wasm_worker.h>
 #include <webgpu/webgpu.h>
 #include <iostream>
 #include <format>
@@ -449,8 +450,19 @@ bool render(double time, void *userData)
     return true; // 返回true继续回调
 }
 
+emscripten_wasm_worker_t worker{};
+void run_in_worker()
+{
+    printf("Hello from Wasm Worker!\n");
+
+    std::cout << "Worker Thread ID:" << std::this_thread::get_id() << std::endl;
+
+    emscripten_terminate_wasm_worker(worker);
+}
+
 int main()
 {
+    std::cout << "Main Thread ID:" << std::this_thread::get_id() << std::endl;
     initWebGpu();
     emscripten_sleep(10);
     initDraw();
@@ -465,5 +477,8 @@ int main()
     emscripten_fetch(&attr, url.c_str());
 
     emscripten_request_animation_frame_loop(render, nullptr);
+
+    worker = emscripten_malloc_wasm_worker(/*stackSize: */ 1024);
+    emscripten_wasm_worker_post_function_v(worker, run_in_worker);
     return 0;
 }

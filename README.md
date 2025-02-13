@@ -190,12 +190,12 @@ endif()
             "request": "launch",
             "url": "http://127.0.0.1:5500/build/hello.html",
             "preLaunchTask": "StartServer"
-
         }
     ]
 }
 ```
 * 在.vscode目录中添加task.json文件，添加 `StartServer` Task 用于启动LiveServer
+* 这里用的是[LivePreview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server)插件，LivePreview插件可以配置http header，用于多线需要使用
 ```json
 {
     "version": "2.0.0",
@@ -216,8 +216,22 @@ endif()
 }
 ```
 
+### 多线程 和 [wasm_worker](https://emscripten.org/docs/api_reference/wasm_workers.html)，需要修改LivePreview插件配置
+在settings.json中添加如下配置
+```json
+{
+
+    "livePreview.httpHeaders": {
+        "Cross-Origin-Opener-Policy": "same-origin",
+        "Cross-Origin-Embedder-Policy": "require-corp",
+        "Accept-Ranges": "bytes"
+    }
+}
+```
+
 ### chrome中直接调试
 * 安装chrome插件[C/C++ DevTools Support (DWARF)](https://chromewebstore.google.com/detail/cc++-devtools-support-dwa/pdcpmagijalfljmkmjngeonclgbbannb)
+* 如果出现读取失败`Error: NotFoundError: Unable to load debug symbols`，需要在插件中设置`可读取和更改网站数据`
 * 在Chrome开发者工具工具的 `Source` 中会多一个 `file://` 展开目录会包含C/C++源码，可以直接断点调试 
 
 # 其他

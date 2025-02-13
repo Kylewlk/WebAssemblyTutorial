@@ -76,6 +76,14 @@
       var outputElement = document.getElementById('output');
       if (outputElement) outputElement.value = ''; // clear browser cache
 
+      if (window.crossOriginIsolated) {
+          // 可以安全地使用 SharedArrayBuffer
+          const sharedBuffer = new SharedArrayBuffer(1024);
+          // 进行后续操作
+      } else {
+          console.error('页面不满足 cross-origin isolated 状态，无法使用 SharedArrayBuffer');
+      }
+
       // As a default initial behavior, pop up an alert when webgl context is lost. To make your
       // application robust, you may want to override this behavior before shipping!
       // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
