@@ -27,6 +27,7 @@ add_custom_command(
     OUTPUT glue.cpp glue.js
     BYPRODUCTS parser.out WebIDLGrammar.pkl
     COMMAND ${PYTHON} ${WEBIDL_BINDER_SCRIPT} ${WEB_IDL_FILE} glue
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     DEPENDS ${WEB_IDL_FILE}
     COMMENT "Generating web idl binding files"
     VERBATIM)

@@ -29,6 +29,7 @@ else()
 endif()
 
 add_subdirectory(00-hello)
+add_subdirectory(module)
 
 if (EMCC_VERSION VERSION_GREATER "4.0.0")
     add_subdirectory(webidl)
