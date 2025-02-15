@@ -3,11 +3,12 @@ project(WebAssemblyTutorial-module)
 
 set(CMAKE_EXECUTABLE_SUFFIX .js)
 
-add_library(module module.cpp module.h)
+add_executable(module module.cpp module.h)
 
-target_link_options(module PRIVATE "--post-js=${CMAKE_CURRENT_BINARY_DIR}/glue.js"
-    "--shell-file=${CMAKE_CURRENT_SOURCE_DIR}/shell.html"
-
+target_link_options(module PRIVATE "--post-js=${CMAKE_CURRENT_BINARY_DIR}/module_glue.js"
+    "--pre-js=${CMAKE_CURRENT_SOURCE_DIR}/pre.js"
+    "-sMODULARIZE=1"
+    "-sEXPORT_NAME=Mym"
     "-sEXPORTED_RUNTIME_METHODS=[\"stringToUTF8\", \"addFunction\"]"
     "-sALLOW_TABLE_GROWTH=1"
 
@@ -34,3 +35,5 @@ add_custom_command(
 add_custom_target(module-bindings ALL DEPENDS module_glue.cpp)
 
 add_dependencies(module module-bindings)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/module.html DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
