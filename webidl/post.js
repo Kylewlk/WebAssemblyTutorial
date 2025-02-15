@@ -21,6 +21,18 @@ var isMemoryGrowthAllowed = false;
   console.log(sme.get_immutableAttr());
   console.log(sme.immutableAttr);
 
+  var sme2 = null;
+  const callback = function (sss) {
+    sme2 = TheModule.wrapPointer(sss, TheModule.Parent);
+  };
+  callback.point = TheModule.addFunction(callback, 'vp');
+  sme.callbackNew(callback.point);
+  console.log(sme2);
+  console.log(sme2.getVal());
+  console.log(sme2.getVal());
+  TheModule.destroy(sme2);
+
+
   try {
     sme.immutableAttr = 1;
   } catch (e) {}

@@ -21,6 +21,15 @@ public:
   const Parent *getAsConst() { return NULL; }
   void *voidStar(void *something) { return something; }
   bool getBoolean() { return true; }
+
+  using CallBackType = void (*)(Parent *p);
+  void callbackNew(void* func)
+  {
+    CallBackType callback = reinterpret_cast<CallBackType>(func);
+    auto p = new Parent(100);
+    callback(p);
+  }
+
   int attr;
   const int immutableAttr;
 };

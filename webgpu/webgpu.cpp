@@ -105,6 +105,9 @@ void initWebGpu()
 
     WGPUAdapterProperties adapterProperties = {};
     wgpuAdapterGetProperties(adapter, &adapterProperties);
+    std::cout << "adapterProperties.name: " << adapterProperties.name << std::endl;
+    std::cout << "adapterProperties.adapterType: " << (int)adapterProperties.adapterType << std::endl;
+    std::cout << "adapterProperties.backendType: " << (int)adapterProperties.backendType << std::endl;
 
     preferredFormat = wgpuSurfaceGetPreferredFormat(surface, adapter);
     if (preferredFormat == WGPUTextureFormat_Undefined)

@@ -8,7 +8,9 @@ add_executable(webidl test.cpp test.h)
 target_link_options(webidl PRIVATE "--post-js=${CMAKE_CURRENT_BINARY_DIR}/glue.js"
     "--shell-file=${CMAKE_CURRENT_SOURCE_DIR}/shell.html"
     "-sEXPORTED_FUNCTIONS=[\"_malloc\", \"_free\"]"
-    "-sEXPORTED_RUNTIME_METHODS=[\"stringToUTF8\"]"
+    "-sEXPORTED_RUNTIME_METHODS=[\"stringToUTF8\", \"addFunction\"]"
+    "-sALLOW_TABLE_GROWTH=1"
+
     # "--extern-post-js=${CMAKE_CURRENT_SOURCE_DIR}/post.js"
 )
 
@@ -28,6 +30,7 @@ add_custom_command(
     DEPENDS ${WEB_IDL_FILE}
     COMMENT "Generating web idl binding files"
     VERBATIM)
+message(STATUS "${PYTHON} ${WEBIDL_BINDER_SCRIPT} ${WEB_IDL_FILE} glue")
 
 add_custom_target(webidl-bindings ALL DEPENDS glue.cpp)
 
