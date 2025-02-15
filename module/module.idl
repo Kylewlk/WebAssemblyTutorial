@@ -5,4 +5,6 @@ interface MyObject{
     static void createAsync(long n, VoidPtr callback);
 
     void printInfo();
+
+    long getN();
 };
