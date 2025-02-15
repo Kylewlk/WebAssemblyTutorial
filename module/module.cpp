@@ -37,11 +37,17 @@ void MyObject::createAsync(int n, void *callback)
     
     emscripten_set_timeout([](void* useData){
         auto params = reinterpret_cast<Params *>(useData);
-
         auto cb = reinterpret_cast<CreateCallback>(params->cb);
-        auto obj = new MyObject(params->n);
-        cb(obj);
         
+        if (params->n <= 0)
+        {
+            cb(nullptr);
+        }
+        else
+        {
+            auto obj = new MyObject(params->n);
+            cb(obj);
+        }
         delete params;
     }, 1000, params);
 }

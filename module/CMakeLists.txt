@@ -5,7 +5,9 @@ set(CMAKE_EXECUTABLE_SUFFIX .js)
 
 add_executable(module module.cpp module.h)
 
-target_link_options(module PRIVATE "--post-js=${CMAKE_CURRENT_BINARY_DIR}/module_glue.js"
+target_link_options(module PRIVATE
+    "--post-js=${CMAKE_CURRENT_BINARY_DIR}/module_glue.js"
+    "--post-js=${CMAKE_CURRENT_SOURCE_DIR}/post.js"
     "--pre-js=${CMAKE_CURRENT_SOURCE_DIR}/pre.js"
     "-sMODULARIZE=1"
     "-sEXPORT_NAME=Mym"

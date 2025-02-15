@@ -1,6 +1,6 @@
 
 
-Mym().then((MymInstance) => {
+Mym().then(async (MymInstance) => {
 
     console.log(MymInstance);
 
@@ -8,26 +8,19 @@ Mym().then((MymInstance) => {
     obj1.printInfo();
     MymInstance.destroy(obj1);
 
-    let obj2 = null;
-    const cb = (obj) => {
-        obj2 = obj;
+    const obj2 = await MymInstance.MyObject.prototype.createAsync(2);
+    console.log(obj2);
+    obj2.printInfo();
+    MymInstance.destroy(obj2);
 
-        console.log(obj2);
-        obj2.printInfo();
-        MymInstance.destroy(obj2);
-    }
-
-    const callback = (obj) =>{
-        const wobj = obj !== 0 ? MymInstance.wrapPointer(obj, MymInstance.MyObject) : null;
-        cb(wobj);
-    }
-
-    const callbackPoint = MymInstance.addFunction(callback, 'vi'); // 低版本 emsdk 用 i 代替 p
-    MymInstance.MyObject.prototype.createAsync(2, callbackPoint);
-    // console.log(obj2);
-    // obj2.printInfo();
-    // MymInstance.destroy(obj2);
-
+    const promise3 = MymInstance.MyObject.prototype.createAsync(-3);
+    promise3.then((obj3) => {
+        console.log(obj3);
+        obj3.printInfo();
+        MymInstance.destroy(obj3);
+    }).catch((err) => {
+        console.log(err);
+    });
 });
 
 
