@@ -4,6 +4,8 @@
 // found in the LICENSE file.
 
 #include <iostream>
+#include <emscripten.h>
+#include <emscripten/html5.h>
 
 #include "module.h"
 
@@ -26,10 +28,22 @@ void MyObject::createAsync(int n, void *callback)
         std::cout << "MyObject::createAsync: Callback is null" << std::endl;
         return;
     }
+    struct Params
+    {
+        int n{};
+        CreateCallback cb{};
+    };
+    auto params = new Params{n, reinterpret_cast<CreateCallback>(callback)};
+    
+    emscripten_set_timeout([](void* useData){
+        auto params = reinterpret_cast<Params *>(useData);
 
-    auto cb = reinterpret_cast<CreateCallback>(callback);
-    auto obj = new MyObject(n);
-    cb(obj);
+        auto cb = reinterpret_cast<CreateCallback>(params->cb);
+        auto obj = new MyObject(params->n);
+        cb(obj);
+        
+        delete params;
+    }, 1000, params);
 }
 
 void MyObject::printInfo() const

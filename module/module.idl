@@ -1,5 +1,8 @@
 
 interface MyObject{
     void MyObject(long n);
+
+    static void createAsync(long n, VoidPtr callback);
+
     void printInfo();
 };
