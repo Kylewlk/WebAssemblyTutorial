@@ -11,6 +11,10 @@
 
 #include "module_glue.cpp"
 
+namespace MyNameSpace
+{
+
+
 MyObject::MyObject(int n) : n(n)
 {
     std::cout << "Object created, n = " << n << std::endl;
@@ -57,3 +61,4 @@ void MyObject::printInfo() const
     std::cout << "Object info: n = " << n << std::endl;
 }
 
+}

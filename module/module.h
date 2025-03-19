@@ -1,5 +1,7 @@
 #pragma once
 
+namespace MyNameSpace
+{
 
 class MyObject
 {
@@ -15,3 +17,5 @@ public:
 
     int n = 0;
 };
+
+} // namespace MyNameSpace

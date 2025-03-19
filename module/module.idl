@@ -1,4 +1,5 @@
 
+[Prefix="MyNameSpace::"]
 interface MyObject{
     void MyObject(long n);
 

@@ -1,6 +1,9 @@
 
+const mymPromise = Mym();
 
-Mym().then(async (instance) => {
+console.log(mymPromise);
+
+mymPromise.then(async (instance) => {
   /**
    * @type {import('./types').Mym}
    */
