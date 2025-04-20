@@ -11,6 +11,7 @@
       "displayName": "Base Configuration Preset",
       "binaryDir": "cmake-build",
       "generator": "Ninja",
+      "hidden": true,
       "toolchainFile": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
     },
     {

@@ -8,8 +8,13 @@ project(WebAssemblyTutorial)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD 17)
 
+set(EMCC_COMMAND emcc)
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+    set(EMCC_COMMAND emcc.bat)
+endif()
+
 execute_process(
-    COMMAND emcc --version
+    COMMAND ${EMCC_COMMAND} --version
     RESULT_VARIABLE EMCC_RESULT
     OUTPUT_VARIABLE EMCC_VERSION_OUTPUT
     ERROR_VARIABLE EMCC_ERROR

@@ -1,6 +1,7 @@
 .vscode
 cmake-build*
 emcake
+build
 
 *.out.js
 *.wasm
