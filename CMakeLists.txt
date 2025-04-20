@@ -43,3 +43,4 @@ else()
     message(WARNING "Emscripten version is ${EMCC_VERSION} less than 4.0.0.")
 endif()
 
+add_subdirectory(embind)
