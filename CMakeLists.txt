@@ -1,8 +1,8 @@
 
 cmake_minimum_required(VERSION 3.21)
 
-set(CMAKE_TOOLCHAIN_FILE $ENV{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake)
-
+# set(CMAKE_TOOLCHAIN_FILE $ENV{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake)
+# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(WebAssemblyTutorial)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -39,8 +39,8 @@ add_subdirectory(module)
 if (EMCC_VERSION VERSION_GREATER "4.0.0")
     add_subdirectory(webidl)
     add_subdirectory(webgpu)
+    add_subdirectory(embind)
 else()
     message(WARNING "Emscripten version is ${EMCC_VERSION} less than 4.0.0.")
 endif()
 
-add_subdirectory(embind)

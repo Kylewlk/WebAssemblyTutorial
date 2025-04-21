@@ -4,6 +4,13 @@
     "configurations": [
         {
             "name": "WebAssembly",
+            "intelliSenseMode": "linux-clang-x86",
+            "compileCommands": [
+                "${workspaceFolder}/cmake-build/compile_commands.json"
+            ]
+        },
+        {
+            "name": "WebAssembly2",
             "includePath": [
                 "${workspaceFolder}/**",
                 "${env:EMSDK}/upstream/emscripten/system/include"
@@ -14,6 +21,11 @@
             "cStandard": "c17",
             "cppStandard": "c++20",
             "intelliSenseMode": "linux-clang-x86"
+        },
+        {
+            "name": "WebAssembly3",
+            "intelliSenseMode": "linux-clang-x86",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

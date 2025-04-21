@@ -102,7 +102,8 @@ emcmake echo
       "binaryDir": "cmake-build",
       "generator": "Ninja",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS" : "ON"
       },
       "toolchainFile": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
     }
@@ -131,21 +132,16 @@ endif()
 # 代码提示和错误检查
 * 安装[ C/C++ Extension Pack ](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)插件
 * 在.vscode文件夹中添加c_cpp_properties.json文件
-* Windows上 `compilerPath` 需要使用 emcc.bat
+* cmake中需要设置 "CMAKE_EXPORT_COMPILE_COMMANDS" : "ON" 才会生成 compile_commands.json
 ```json
 {
     "configurations": [
         {
             "name": "WebAssembly",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "${env:EMSDK}/upstream/emscripten/system/include"
-            ],
-            "defines": [],
-            "compilerPath": "${env:EMSDK}/upstream/emscripten/emcc", 
-            "cStandard": "c17",
-            "cppStandard": "c++20",
-            "intelliSenseMode": "linux-clang-x64"
+            "intelliSenseMode": "linux-clang-x86",
+            "compileCommands": [
+                "${workspaceFolder}/cmake-build/compile_commands.json"
+            ]
         }
     ],
     "version": 4
