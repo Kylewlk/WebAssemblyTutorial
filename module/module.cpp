@@ -59,6 +59,7 @@ void MyObject::createAsync(int n, void *callback)
 void MyObject::printInfo() const
 {
     std::cout << "Object info: n = " << n << std::endl;
+    std::cerr << "Error info: n = " << n << std::endl;
 }
 
 }

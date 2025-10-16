@@ -18,7 +18,15 @@ async function dynamicImportExample() {
 
 const mymPromise =dynamicImportExample().then((module) => {
   const Mym = module.default;
-  return Mym();
+  // return Mym();
+  return Mym({
+    disableLogInfo: false,
+    disableLogError: false,
+    locateFile: (file, dir) => {
+    console.log('custom locateFile', file, dir);
+    return dir + file;
+   }
+  });
 });
 
 console.log(mymPromise);
