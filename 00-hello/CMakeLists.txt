@@ -16,6 +16,18 @@ if(EMCC_VERSION VERSION_GREATER "4.0.0")
     )
 endif()
 
+target_compile_options(hello PUBLIC
+    "-pthread"
+)
+
+target_link_options(
+    hello PUBLIC
+    "-pthread"
+    "-sPTHREAD_POOL_SIZE=2"
+    "-gseparate-dwarf"
+)
+
+
  message(STATUS "CMAKE_HOST_SYSTEM_NAME: ${CMAKE_HOST_SYSTEM_NAME}")
  message(STATUS "CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
  
