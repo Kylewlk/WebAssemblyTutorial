@@ -19,7 +19,7 @@ MyObject.prototype["createAsync"] = (n) => {
     }
   };
   const callbackPoint = addFunction(callback, "vi"); // 低版本 emsdk 用 i 代替 p
-  MyObject_createAsync(n, callbackPoint);
+  MyObject_createAsync.call({ptr:0}, n, callbackPoint); // es6 module 中 需要有 this 指针才能调用静态函数
   return promise;
 };
 

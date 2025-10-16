@@ -1,5 +1,25 @@
 
-const mymPromise = Mym();
+const htmlPath = window.location.pathname;
+const index = htmlPath.lastIndexOf('/');
+const basePath = htmlPath.substring(0, index) +'/module.js';
+console.log(basePath);
+
+async function dynamicImportExample() {
+  try {
+    // 动态 import 支持字符串表达式
+    const module = await import(basePath);
+    // 使用导入的模块
+    console.log(module);
+    return module;
+  } catch (error) {
+    console.error('模块加载失败:', error);
+  }
+}
+
+const mymPromise =dynamicImportExample().then((module) => {
+  const Mym = module.default;
+  return Mym();
+});
 
 console.log(mymPromise);
 
