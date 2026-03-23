@@ -231,7 +231,7 @@ endif()
 * 在Chrome开发者工具工具的 `Source` 中会多一个 `file://` 展开目录会包含C/C++源码，可以直接断点调试 
 
 ## 调试技巧
-* 如果wasm文件太大，Debug版本浏览器加载时会报错，可以只在当前库开启调试，其他库使用 `-O3` 优化 `target_compile_options(fantasy PRIVATE -O3)`, `target_link_options(fantasy PRIVATE -O3)`, 减少链接时警告可以链接选项加上`"-Wno-limited-postlink-optimizations"`  [Optimizing Code](https://emscripten.org/docs/optimizing/Optimizing-Code.html)
+* 如果wasm文件太大，Debug版本浏览器加载时会报错，可以只在当前库开启调试，其他库使用 `-O3` 优化 `target_compile_options(fantasy PRIVATE -O3)`, `target_link_options(fantasy PRIVATE -O3)`  [Optimizing Code](https://emscripten.org/docs/optimizing/Optimizing-Code.html)
 
 # 其他
 [视频教程 WebAssembly Tutorial](https://www.youtube.com/watch?v=_8T9T6MQ1fU&list=PLysLvOneEETPM_YbEyZcJ35_3pSdrj33O)
