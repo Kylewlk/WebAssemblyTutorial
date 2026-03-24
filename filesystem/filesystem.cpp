@@ -1,10 +1,13 @@
 #include <iostream>
 #include <fstream>
-
+#include <emscripten.h>
 
 
 int main()
 {
+    // scan 定义在 post.js 中
+    emscripten_run_script("scan('/d/')");
+
     std::fstream file1 ("/d/t1.txt", std::ios::in);
     if (!file1.is_open())
     {
@@ -26,7 +29,6 @@ int main()
     std::getline(file2, t2);
     std::cout << "t2: " << t2 << std::endl;
     file2.close();
-
 
     return 0;
 }

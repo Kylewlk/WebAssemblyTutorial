@@ -3,7 +3,11 @@ project(filesystem)
 add_executable(filesystem filesystem.cpp)
 
 target_link_options(filesystem PRIVATE
-    --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/data/@/d
+
+    # 增加 SHELL: 前缀，Ninja 会直接报字符串当中命令
+    "SHELL:--preload-file ${CMAKE_CURRENT_SOURCE_DIR}/data/@/d"
+
+    "--post-js=${CMAKE_CURRENT_SOURCE_DIR}/post.js"
 )
 
 

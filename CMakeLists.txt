@@ -37,6 +37,7 @@ add_subdirectory(00-hello)
 add_subdirectory(module)
 add_subdirectory(embind)
 add_subdirectory(filesystem)
+add_subdirectory(sharedlib)
 
 if (EMCC_VERSION VERSION_GREATER "4.0.0")
     add_subdirectory(webgpu)
